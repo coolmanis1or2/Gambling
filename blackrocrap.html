@@ -201,9 +201,11 @@
         }
 
         function resetWheel() {
-        if (!rouletteWheelInner) return;
+        if (!rouletteWheelInner || !rouletteWheelNumbersEl) return;
         rouletteWheelInner.style.transition = 'none';
         rouletteWheelInner.style.transform = 'rotate(0deg)';
+        rouletteWheelNumbersEl.style.transition = 'none';
+        rouletteWheelNumbersEl.style.transform = 'rotate(0deg)';
         }
 
         function renderRouletteNumbers() {
