@@ -57,6 +57,8 @@
         .roulette-wheel::before { content: ''; position: absolute; inset: 0; border-radius: 50%; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.12); }
         .roulette-wheel .wheel-inner { width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#c62828 0 18deg, #111 18deg 36deg, #c62828 36deg 54deg, #111 54deg 72deg, #c62828 72deg 90deg, #111 90deg 108deg, #c62828 108deg 126deg, #111 126deg 144deg, #c62828 144deg 162deg, #111 162deg 180deg, #c62828 180deg 198deg, #111 198deg 216deg, #c62828 216deg 234deg, #111 234deg 252deg, #c62828 252deg 270deg, #111 270deg 288deg, #c62828 288deg 306deg, #111 306deg 324deg, #2a7729 324deg 342deg, #c62828 342deg 360deg); transform: rotate(0deg); transition: none; }
         .roulette-wheel .wheel-arrow { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 1.6rem; text-shadow: 0 0 6px rgba(0,0,0,0.5); pointer-events: none; }
+        .roulette-wheel .wheel-numbers { position: absolute; inset: 0; pointer-events: none; }
+        .roulette-wheel .wheel-number { position: absolute; left: 50%; top: 50%; width: 28px; height: 22px; margin-left: -14px; margin-top: -11px; display: grid; place-items: center; font-size: 0.7rem; font-weight: 700; color: #fff; text-shadow: 0 0 2px rgba(0,0,0,0.9); transform-origin: center center; }
     </style>
     </head>
     <body>
@@ -109,6 +111,7 @@
         <div class="section">
             <div class="roulette-wheel" id="roulette-wheel">
             <div class="wheel-inner" id="roulette-wheel-inner"></div>
+            <div class="wheel-numbers" id="roulette-wheel-numbers"></div>
             <div class="wheel-arrow">▲</div>
             </div>
         </div>
@@ -179,9 +182,11 @@
         const rouletteResetBtn = document.getElementById('roulette-reset-btn');
         const rouletteStatusEl = document.getElementById('roulette-status');
         const rouletteWheelInner = document.getElementById('roulette-wheel-inner');
+        const rouletteWheelNumbersEl = document.getElementById('roulette-wheel-numbers');
         let rouletteSpinning = false;
 
         const rouletteRedNumbers = new Set([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]);
+        const rouletteWheelOrder = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
 
         function getRouletteColor(number) {
         if (number === 0) {
@@ -194,6 +199,21 @@
         if (!rouletteWheelInner) return;
         rouletteWheelInner.style.transition = 'none';
         rouletteWheelInner.style.transform = 'rotate(0deg)';
+        }
+
+        function renderRouletteNumbers() {
+        if (!rouletteWheelNumbersEl) return;
+        rouletteWheelNumbersEl.innerHTML = '';
+        rouletteWheelOrder.forEach((num, index) => {
+            const angle = index * (360 / rouletteWheelOrder.length);
+            const numberEl = document.createElement('span');
+            numberEl.className = 'wheel-number';
+            numberEl.textContent = num;
+            const color = getRouletteColor(num);
+            numberEl.style.color = color === 'black' ? '#fff' : color === 'red' ? '#d62828' : '#7dbf6f';
+            numberEl.style.transform = `rotate(${angle}deg) translateY(-118px) rotate(${-angle}deg)`;
+            rouletteWheelNumbersEl.appendChild(numberEl);
+        });
         }
 
         function updateRouletteUI() {
@@ -274,6 +294,7 @@
         rouletteNumberLabel.style.display = 'none';
         setRouletteMessage('Place a bet and spin.');
         resetWheel();
+        renderRouletteNumbers();
         updateRouletteUI();
         }
 
