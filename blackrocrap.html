@@ -218,7 +218,7 @@
             numberEl.textContent = num;
             const color = getRouletteColor(num);
             numberEl.style.color = color === 'black' ? '#fff' : color === 'red' ? '#d62828' : '#7dbf6f';
-            numberEl.style.transform = `rotate(${angle}deg) translateY(-118px) rotate(${-angle}deg)`;
+            numberEl.style.transform = `rotate(${angle}deg) translateY(-118px)`;
             rouletteWheelNumbersEl.appendChild(numberEl);
         });
         }
@@ -269,6 +269,10 @@
         if (rouletteWheelInner) {
             rouletteWheelInner.style.transition = 'transform 2s ease-out';
             rouletteWheelInner.style.transform = `rotate(${rotation}deg)`;
+        }
+        if (rouletteWheelNumbersEl) {
+            rouletteWheelNumbersEl.style.transition = 'transform 2s ease-out';
+            rouletteWheelNumbersEl.style.transform = `rotate(${rotation}deg)`;
         }
 
         setTimeout(() => {
