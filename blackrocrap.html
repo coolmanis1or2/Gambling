@@ -15,6 +15,9 @@
         .buttons { display: flex; gap: 12px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
         button { padding: 10px 18px; border: none; border-radius: 8px; background: #66c0cf; color: #153d50; font-size: 1rem; cursor: pointer; }
         button:disabled { opacity: 0.5; cursor: default; }
+        button#reset-all-btn,
+        button#roulette-reset-btn,
+        #resetBtn { display: none; }
         .status { text-align: center; margin-top: 12px; font-size: 1.1rem; }
         .leaderboard { text-align: center; margin-top: 16px; line-height: 1.5; }
         .leaderboard div { margin: 4px 0; }
@@ -70,6 +73,9 @@
     <div id="blackjack-page">
         <div class="game">
         <h1>Blackjack</h1>
+        <div class="section">
+            <div>Account Balance: $<span id="account-balance">1000</span></div>
+        </div>
         <div id="top-right-leaderboard" style="position:absolute; top:12px; right:12px; background:#153d50; border:1px solid #66c0cf; padding:10px; border-radius:8px; text-align:left;">
             <strong>Top Ratios</strong>
             <ol id="top-ratios" style="margin:6px 0 0 18px; padding:0;"></ol>
@@ -88,7 +94,6 @@
             <button id="double-btn">Double Down</button>
             <button id="split-btn">Split</button>
             <button id="new-game-btn">New Game</button>
-            <button id="reset-all-btn">Reset All</button>
         </div>
         <div class="status" id="status">Click New Game to start.</div>
         <div class="section leaderboard">
@@ -137,7 +142,6 @@
         </div>
         <div class="buttons">
             <button id="roulette-spin-btn">Spin</button>
-            <button id="roulette-reset-btn">Reset</button>
         </div>
         <div class="status" id="roulette-status">Place a bet and spin.</div>
         </div>
@@ -171,7 +175,8 @@
         showBlackjackBtn.addEventListener('click', () => showPage('blackjack'));
         showRouletteBtn.addEventListener('click', () => showPage('roulette'));
 
-        let rouletteBalance = 1000;
+        let accountBalance = 1000;
+        const accountBalanceEl = document.getElementById('account-balance');
         const rouletteBalanceEl = document.getElementById('roulette-balance');
         const rouletteResultEl = document.getElementById('roulette-result');
         const rouletteBetAmountInput = document.getElementById('roulette-bet-amount');
@@ -216,8 +221,11 @@
         });
         }
 
-        function updateRouletteUI() {
-        rouletteBalanceEl.textContent = rouletteBalance;
+        function updateSharedBalanceUI() {
+        if (accountBalanceEl) {
+            accountBalanceEl.textContent = accountBalance;
+        }
+        rouletteBalanceEl.textContent = accountBalance;
         }
 
         function setRouletteMessage(message) {
@@ -234,7 +242,7 @@
             setRouletteMessage('Enter a valid bet amount.');
             return;
         }
-        if (betAmount > rouletteBalance) {
+        if (betAmount > accountBalance) {
             setRouletteMessage('Not enough balance to place that bet.');
             return;
         }
@@ -247,8 +255,8 @@
         rouletteSpinning = true;
         rouletteSpinBtn.disabled = true;
         setRouletteMessage('Spinning the wheel...');
-        rouletteBalance -= betAmount;
-        updateRouletteUI();
+        accountBalance -= betAmount;
+        updateSharedBalanceUI();
 
         const resultNumber = Math.floor(Math.random() * 37);
         const resultColor = getRouletteColor(resultNumber);
@@ -276,18 +284,18 @@
             }
 
             if (payout > 0) {
-            rouletteBalance += payout;
+            accountBalance += payout;
             setRouletteMessage(`Spin ${resultNumber} ${resultColor}. You win $${payout}!`);
             } else {
             setRouletteMessage(`Spin ${resultNumber} ${resultColor}. You lose.`);
             }
             rouletteResultEl.textContent = `${resultNumber} ${resultColor}`;
-            updateRouletteUI();
+            updateSharedBalanceUI();
         }, 2000);
         }
 
         function resetRoulette() {
-        rouletteBalance = 1000;
+        accountBalance = 1000;
         rouletteResultEl.textContent = 'None';
         rouletteBetAmountInput.value = 10;
         rouletteBetTypeSelect.value = 'red';
@@ -295,14 +303,14 @@
         setRouletteMessage('Place a bet and spin.');
         resetWheel();
         renderRouletteNumbers();
-        updateRouletteUI();
+        updateSharedBalanceUI();
         }
 
         rouletteBetTypeSelect.addEventListener('change', () => {
         rouletteNumberLabel.style.display = rouletteBetTypeSelect.value === 'number' ? 'inline-flex' : 'none';
         });
-        rouletteSpinBtn.addEventListener('click', spinRoulette);
-        rouletteResetBtn.addEventListener('click', resetRoulette);
+        rouletteSpinBtn?.addEventListener('click', spinRoulette);
+        rouletteResetBtn?.addEventListener('click', resetRoulette);
 
         resetRoulette();
 
@@ -653,7 +661,7 @@
         doubleBtn.addEventListener('click', playerDouble);
         splitBtn.addEventListener('click', playerSplit);
         newGameBtn.addEventListener('click', startGame);
-        resetAllBtn.addEventListener('click', resetAll);
+        resetAllBtn?.addEventListener('click', resetAll);
 
         loadStats();
         updateUI();
@@ -1146,7 +1154,7 @@
         document.getElementById("standBtn").addEventListener("click", standHand);
         document.getElementById("foldBtn").addEventListener("click", foldHand);
         document.getElementById("dealBtn").addEventListener("click", () => dealHands());
-        document.getElementById("resetBtn").addEventListener("click", () => {
+        document.getElementById("resetBtn")?.addEventListener("click", () => {
             // Reset each player's bank to initial balance and clear wagers/pot
             if (hands && hands.length) {
             hands.forEach(hand => {
