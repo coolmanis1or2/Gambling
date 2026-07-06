@@ -260,7 +260,10 @@
 
         const resultNumber = Math.floor(Math.random() * 37);
         const resultColor = getRouletteColor(resultNumber);
-        const rotation = 360 * 5 + Math.floor(Math.random() * 360);
+        const resultIndex = rouletteWheelOrder.indexOf(resultNumber);
+        const segmentAngle = 360 / rouletteWheelOrder.length;
+        const extraSpins = 5 + Math.floor(Math.random() * 3);
+        const rotation = 360 * extraSpins - resultIndex * segmentAngle;
         if (rouletteWheelInner) {
             rouletteWheelInner.style.transition = 'transform 2s ease-out';
             rouletteWheelInner.style.transform = `rotate(${rotation}deg)`;
