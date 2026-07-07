@@ -218,6 +218,25 @@
         showRouletteBtn.addEventListener('click', () => showPage('roulette'));
         showSlotsBtn.addEventListener('click', () => showPage('slots'));
 
+        // Cover buttons navigate to respective pages (hide cover)
+        const coverBlackjackBtn = document.getElementById('cover-blackjack-btn');
+        const coverRouletteBtn = document.getElementById('cover-roulette-btn');
+        const coverSlotsBtn = document.getElementById('cover-slots-btn');
+        const coverPage = document.getElementById('cover-page');
+
+        coverBlackjackBtn?.addEventListener('click', () => {
+        if (coverPage) coverPage.style.display = 'none';
+        showPage('blackjack');
+        });
+        coverRouletteBtn?.addEventListener('click', () => {
+        if (coverPage) coverPage.style.display = 'none';
+        showPage('roulette');
+        });
+        coverSlotsBtn?.addEventListener('click', () => {
+        if (coverPage) coverPage.style.display = 'none';
+        showPage('slots');
+        });
+
         let accountBalance = 1000;
         const accountBalanceEl = document.getElementById('account-balance');
         const rouletteBalanceEl = document.getElementById('roulette-balance');
