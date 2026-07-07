@@ -304,6 +304,7 @@
             setRouletteMessage(`Spin ${resultNumber} ${resultColor}. You lose.`);
             }
             rouletteResultEl.textContent = `${resultNumber} ${resultColor}`;
+            rouletteResultEl.style.color = resultColor === 'black' ? '#fff' : resultColor === 'red' ? '#d62828' : '#7dbf6f';
             updateSharedBalanceUI();
         }, 2000);
         }
@@ -311,6 +312,7 @@
         function resetRoulette() {
         accountBalance = 1000;
         rouletteResultEl.textContent = 'None';
+        rouletteResultEl.style.color = '#f7f3e7';
         rouletteBetAmountInput.value = 10;
         rouletteBetTypeSelect.value = 'red';
         rouletteNumberLabel.style.display = 'none';
