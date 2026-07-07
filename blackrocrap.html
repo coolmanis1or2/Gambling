@@ -3,7 +3,7 @@
     <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blackrocrap</title>
+    <title>Blackroslots</title>
     <style>
         body { font-family: Arial, sans-serif; background: #0b2d39; color: #f7f3e7; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
         .page-switcher { display: flex; justify-content: center; gap: 12px; margin-bottom: 16px; width: 100%; max-width: 520px; }
@@ -68,6 +68,7 @@
     <div class="page-switcher">
         <button id="show-blackjack-page">Blackjack</button>
         <button id="show-roulette-page">Roulette</button>
+        <button id="show-slots-page">Slots</button>
     </div>
 
     <div id="blackjack-page">
@@ -152,20 +153,40 @@
         </div>
     </div>
 
+    <div id="slots-page" style="display:none;">
+        <div class="game">
+        <h1>Slots</h1>
+        <div class="section">
+            <div>Balance: $<span id="slots-balance">1000</span></div>
+        </div>
+        <div class="section">
+            <div>Spin the reels and try your luck.</div>
+        </div>
+        <div class="buttons">
+            <button id="slots-spin-btn">Spin</button>
+        </div>
+        <div class="status" id="slots-status">Slot machine coming soon.</div>
+        </div>
+    </div>
+
     <script>
         const blackjackPage = document.getElementById('blackjack-page');
         const roulettePage = document.getElementById('roulette-page');
+        const slotsPage = document.getElementById('slots-page');
         const showBlackjackBtn = document.getElementById('show-blackjack-page');
         const showRouletteBtn = document.getElementById('show-roulette-page');
+        const showSlotsBtn = document.getElementById('show-slots-page');
 
         const pages = {
         blackjack: blackjackPage,
         roulette: roulettePage,
+        slots: slotsPage,
         };
 
         const pageButtons = {
         blackjack: showBlackjackBtn,
         roulette: showRouletteBtn,
+        slots: showSlotsBtn,
         };
 
         function showPage(page) {
@@ -179,6 +200,7 @@
 
         showBlackjackBtn.addEventListener('click', () => showPage('blackjack'));
         showRouletteBtn.addEventListener('click', () => showPage('roulette'));
+        showSlotsBtn.addEventListener('click', () => showPage('slots'));
 
         let accountBalance = 1000;
         const accountBalanceEl = document.getElementById('account-balance');
