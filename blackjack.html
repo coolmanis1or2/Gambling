@@ -3,30 +3,40 @@
 <head>
   <meta charset="utf-8">
   <title>Blackjack</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body style="margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background-color:rgb(44, 65, 196);flex-direction:column;text-align:center;">
-  <h1>Blackjack</h1>
-  <button id="deal">Deal</button>
-  <button id="hit" disabled>Hit</button>
-  <button id="stand" disabled>Stand</button>
-  <div id="status"></div>
-  <div id="hand"></div>
-  <div id="dealer"></div>
+<body>
+  <div class="gameDiv">
+    <h1>Blackjack</h1>
+    <button id="deal">Deal</button>
+    <button id="hit" disabled>Hit</button>
+    <button id="stand" disabled>Stand</button>
+    <div id="status"></div>
+    <div id="hand"></div>
+    <div id="dealer"></div>
+    <button id="betamount">Bet Amount</button>
+    <div id="balanceDisplay">Balance: $1000</div>
+  </div>
+  
   
   <script>
-    let deck=[],player=[],dealer=[],gameOver=false;
+    let deck=[],player=[],dealer=[],gameOver=false,balance=1000;
     const suits=['♠','♥','♦','♣'],ranks=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
     const mkDeck=()=>deck=suits.flatMap(s=>ranks.map(r=>r+s));
     const v=c=>{const r=c.slice(0,-1);return r==='A'?11:(['K','Q','J'].includes(r)?10:parseInt(r,10));};
     const total=h=>{let s=h.reduce((a,c)=>a+v(c),0),a=h.filter(c=>c[0]==='A').length;while(s>21&&a>0){s-=10;a--}return s};
     const upd=()=>{document.getElementById('hand').textContent='Player: '+player.join(' ')+' ('+total(player)+')';document.getElementById('dealer').textContent='Dealer: '+dealer.join(' ')+' ('+total(dealer)+')'};
+    const updBalance=()=>{document.getElementById('balanceDisplay').textContent='Balance: $'+balance};
     const end=m=>{gameOver=true;document.getElementById('status').textContent=m;['hit','stand'].forEach(id=>document.getElementById(id).disabled=true)};
     const draw=()=>deck.splice(Math.floor(Math.random()*deck.length),1)[0];
     const check=()=>{const p=total(player);if(p===21)end('Player has blackjack!');else if(p>21)end('Player busts. Dealer wins.')};
     const deal=()=>{mkDeck();player=[];dealer=[];gameOver=false;for(let i=0;i<4;i++){(i%2===0?player:dealer).push(draw())}document.getElementById('status').textContent='';['hit','stand'].forEach(id=>document.getElementById(id).disabled=false);upd();check()};
     const hit=()=>{if(gameOver) return;player.push(draw());upd();check()};
     const stand=()=>{if(gameOver) return;while(total(dealer)<17)dealer.push(draw());upd();const p=total(player),d=total(dealer);if(d>21)end('Dealer busts. Player wins.');else if(d>p)end('Dealer wins.');else if(d<p)end('Player wins.');else end('Push.')};
-    ['deal','hit','stand'].forEach(id=>document.getElementById(id).addEventListener('click',{deal,hit,stand}[id]));
+    ['deal','hit','stand'].forEach(id=>document.getElementById(id).addEventListener('click',{deal,hit,stand}[id])); 
+    document.getElementById('betamount').addEventListener('click',()=>{const bet=prompt('Enter bet amount:');if(bet!==null){alert('Bet amount set to $'+bet);}});
+    updBalance();
+
   </script>
 </body>
 </html>
