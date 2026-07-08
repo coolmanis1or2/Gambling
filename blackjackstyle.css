@@ -1,7 +1,7 @@
 body {
     background-image: url("images/background.avif");
 }
-image {
+img {
     max-width: 100%;
     height: auto;
     }
@@ -12,3 +12,7 @@ image {
     justify-content: center;
     height: 100vh;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> b925de2d69afe4b6248feb1eb85115cc85898546
