@@ -21,7 +21,7 @@
         
     </div>
   </nav>
-<div>      
+<div class="leaderboard">      
     <label for="leaderboard" id="leaderboardLabel">Leaderboard:</label>
     Top 5 Players:<br>
     1st: <span id="firstPlace"></span><br>
@@ -52,10 +52,6 @@
   </div>
 
 
- </form>
-
-</body>
-</html>
   <script>
     let deck = [], player = [], dealer = [], gameOver = false, balance = 1000;
     const suits = ['♠', '♥', '♦', '♣'], ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
@@ -71,11 +67,10 @@
     const hit = () => { if (gameOver) return; player.push(draw()); upd(); check() };
     const stand = () => { if (gameOver) return; while (total(dealer) < 17) dealer.push(draw()); upd(); const p = total(player), d = total(dealer); if (d > 21) end('Dealer busts. Player wins.'); else if (d > p) end('Dealer wins.'); else if (d < p) end('Player wins.'); else end('Push.') };
     ['deal', 'hit', 'stand'].forEach(id => document.getElementById(id).addEventListener('click', { deal, hit, stand }[id]));
-    
+
     document.getElementById('betamount').addEventListener('click', () => {
       const bet = prompt('Enter bet amount:');
       if (bet !== null) {
-
         let betAmount = parseInt(bet);
         if (isNaN(betAmount) || betAmount <= 0) {
           alert('Please enter a valid positive number for the bet amount.');
@@ -85,20 +80,38 @@
           alert('Insufficient balance. Please enter a valid bet amount.');
           return;
         }
-
-        alert('Bet amount set to $' + bet);
+        alert('Bet amount set to $' + betAmount);
         balance -= betAmount;
         updBalance();
+        if (balance <= 0) {
+          alert('You have run out of balance. Game over.');
+          end('Game over. You have no more balance.');
+          if (updBalance() && balance <= 0) {
+           upd *= 2;
+            updBalance();
+            updateLeaderboard(playerName);
+          }
+        }
       }
-    }
-    );
+    });
     updBalance();
 
-    
+    if (localStorage.getItem('leaderboard')) {
+      const leaderboard = JSON.parse(localStorage.getItem('leaderboard'));
+      document.getElementById('firstPlace').textContent = leaderboard[0] || '';
+      document.getElementById('secondPlace').textContent = leaderboard[1] || '';
+      document.getElementById('thirdPlace').textContent = leaderboard[2] || '';
+      document.getElementById('fourthPlace').textContent = leaderboard[3] || '';
+      document.getElementById('fifthPlace').textContent = leaderboard[4] || '';
+    }
+
+    const updateLeaderboard = (playerName) => {
+      let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+      leaderboard.push(playerName);
+      leaderboard.sort((a, b) => b - a); // Sort in descending order
+      leaderboard = leaderboard.slice(0, 5); // Keep only top 5
+      localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+    };
   </script>
-
- 
-
 </body>
-
 </html>
