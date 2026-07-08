@@ -16,6 +16,7 @@
     <div id="dealer"></div>
     <button id="betamount">Bet Amount</button>
     <div id="balanceDisplay">Balance: $1000</div>
+    <button onclick="window.location.href='homepage.html'">Back to Main Menu</button>
   </div>
   
   
@@ -57,16 +58,6 @@
     );
     updBalance();
 
-    const originalEnd = end;
-    end = (m) => {
-      originalEnd(m);
-      const betAmount = parseInt(document.getElementById('betamount').textContent.replace('Bet Amount: $', '')) || 0;
-      if (m.includes('Player wins')) {
-      } else if (m.includes('Push')) {
-        balance += betAmount; 
-      }
-      updBalance();
-    };
     
     
 
