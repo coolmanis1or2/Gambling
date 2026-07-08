@@ -34,8 +34,29 @@
     const hit=()=>{if(gameOver) return;player.push(draw());upd();check()};
     const stand=()=>{if(gameOver) return;while(total(dealer)<17)dealer.push(draw());upd();const p=total(player),d=total(dealer);if(d>21)end('Dealer busts. Player wins.');else if(d>p)end('Dealer wins.');else if(d<p)end('Player wins.');else end('Push.')};
     ['deal','hit','stand'].forEach(id=>document.getElementById(id).addEventListener('click',{deal,hit,stand}[id])); 
-    document.getElementById('betamount').addEventListener('click',()=>{const bet=prompt('Enter bet amount:');if(bet!==null){alert('Bet amount set to $'+bet);}});
+    document.getElementById('betamount').addEventListener('click',()=>
+      {
+        const bet=prompt('Enter bet amount:');
+        if(bet!==null) {
+          
+          let betAmount = parseInt(bet);
+          if (isNaN(betAmount) || betAmount <= 0) {
+            alert('Please enter a valid positive number for the bet amount.');
+            return; 
+          }
+          if (betAmount > balance) {
+            alert('Insufficient balance. Please enter a valid bet amount.');
+            return;
+          }
+
+          alert('Bet amount set to $'+bet);
+          balance -= betAmount;
+          updBalance();
+        }
+      }
+    );
     updBalance();
+    
 
   </script>
 </body>
