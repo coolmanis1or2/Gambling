@@ -18,11 +18,27 @@
     <div> 
         <a  class="btn btn-outline-light me-2" href="blackjack.html">Black Jack</a>
         <a class="btn btn-success" href="homepage.html">Second Page</a>
+        
     </div>
   </nav>
-
+<div>      
+    <label for="leaderboard" id="leaderboardLabel">Leaderboard:</label>
+    Top 5 Players:<br>
+    1st: <span id="firstPlace"></span><br>
+    2nd: <span id="secondPlace"></span><br>
+    3rd: <span id="thirdPlace"></span><br>
+    4th: <span id="fourthPlace"></span><br>
+    5th: <span id="fifthPlace"></span><br>
+</div>
   <div class="gameDiv">
     <h1>Blackjack</h1>
+      <div class="d-flex-mid">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name">
+        <button type="submit">Submit</button>
+
+      </div>
+        
     <button id="deal">Deal</button>
     <button id="hit" disabled>Hit</button>
     <button id="stand" disabled>Stand</button>
@@ -31,10 +47,15 @@
     <div id="dealer"></div>
     <button id="betamount">Bet Amount</button>
     <div id="balanceDisplay">Balance: $1000</div>
-    <button onclick="window.location.href='homepage.html'">Back to Main Menu</button>
+    <div id="leaderboard"></div>
+
   </div>
 
 
+ </form>
+
+</body>
+</html>
   <script>
     let deck = [], player = [], dealer = [], gameOver = false, balance = 1000;
     const suits = ['♠', '♥', '♦', '♣'], ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
@@ -72,6 +93,17 @@
     }
     );
     updBalance();
+    button.addEventListener('click', () => {
+      const name = document.getElementById('name').value.trim();
+      if (name) {
+        localStorage.setItem('playerName', name);
+        alert('Name saved: ' + name);
+      } else {
+        alert('Please enter a valid name.');
+      }
+    });
+
+    
   </script>
 
  
