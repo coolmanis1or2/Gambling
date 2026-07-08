@@ -56,6 +56,18 @@
       }
     );
     updBalance();
+
+    const originalEnd = end;
+    end = (m) => {
+      originalEnd(m);
+      const betAmount = parseInt(document.getElementById('betamount').textContent.replace('Bet Amount: $', '')) || 0;
+      if (m.includes('Player wins')) {
+      } else if (m.includes('Push')) {
+        balance += betAmount; 
+      }
+      updBalance();
+    };
+    
     
 
   </script>
