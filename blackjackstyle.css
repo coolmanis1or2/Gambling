@@ -1,5 +1,6 @@
 body {
-    background-image: url("images/background.avif");
+    background-image: url("images/casino-sales-blank-banner-background_23-2151454026.avif");
+    background-size: cover 
 }
 img {
     max-width: 100%;
@@ -12,7 +13,3 @@ img {
     justify-content: center;
     height: 100vh;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> b925de2d69afe4b6248feb1eb85115cc85898546
