@@ -192,6 +192,7 @@
         const showBlackjackBtn = document.getElementById('show-blackjack-page');
         const showRouletteBtn = document.getElementById('show-roulette-page');
         const showSlotsBtn = document.getElementById('show-slots-page');
+        const pageSwitcherControls = document.getElementById('page-switcher-controls');
 
         const pages = {
         blackjack: blackjackPage,
@@ -206,6 +207,9 @@
         };
 
         function showPage(page) {
+        if (pageSwitcherControls) {
+            pageSwitcherControls.style.display = 'flex';
+        }
         Object.values(pages).forEach(p => p.style.display = 'none');
         Object.values(pageButtons).forEach(button => button.disabled = false);
         if (pages[page]) {
@@ -226,14 +230,17 @@
 
         coverBlackjackBtn?.addEventListener('click', () => {
         if (coverPage) coverPage.style.display = 'none';
+        if (pageSwitcherControls) pageSwitcherControls.style.display = 'flex';
         showPage('blackjack');
         });
         coverRouletteBtn?.addEventListener('click', () => {
         if (coverPage) coverPage.style.display = 'none';
+        if (pageSwitcherControls) pageSwitcherControls.style.display = 'flex';
         showPage('roulette');
         });
         coverSlotsBtn?.addEventListener('click', () => {
         if (coverPage) coverPage.style.display = 'none';
+        if (pageSwitcherControls) pageSwitcherControls.style.display = 'flex';
         showPage('slots');
         });
 
