@@ -36,6 +36,7 @@
     ['deal','hit','stand'].forEach(id=>document.getElementById(id).addEventListener('click',{deal,hit,stand}[id])); 
     document.getElementById('betamount').addEventListener('click',()=>{const bet=prompt('Enter bet amount:');if(bet!==null){alert('Bet amount set to $'+bet);}});
     updBalance();
+    
 
   </script>
 </body>
