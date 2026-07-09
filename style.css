@@ -1,5 +1,5 @@
 h1 {
-    font-size: 50px;
+    font-size: 100px;
     font-family: 'Times New Roman', Times, serif;
     font-weight: normal;
     font-display: flex;
@@ -9,5 +9,23 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
+body {
+    background-image: url("images/tuffbackground.jpg");
+    background-size: cover;
+}
+
+.botright {
+    position:absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.botleft {
+    position:absolute;
+    bottom: 0;
+    left: 0;
+    width: 38.5%;
+}
