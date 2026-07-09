@@ -5,6 +5,10 @@ h1 {
     font-display: flex;
 }
 
+h2 {
+    text-align:center;
+}
+
 .d-flex-mid {
     display: flex;
     align-items: center;
