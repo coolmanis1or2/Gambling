@@ -32,13 +32,7 @@
 </div>
   <div class="gameDiv">
     <h1>Blackjack</h1>
-      <div class="d-flex-mid">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name">
-        <button type="submit">Submit</button>
-
-      </div>
-        
+     
     <button id="deal">Deal</button>
     <button id="hit" disabled>Hit</button>
     <button id="stand" disabled>Stand</button>
@@ -53,19 +47,32 @@
 
 
   <script>
-    let deck = [], player = [], dealer = [], gameOver = false, balance = 1000;
+    let deck = [], player = [], dealer = [], gameOver = false, balance = 1000, currentBet = 0;
     const suits = ['♠', '♥', '♦', '♣'], ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
     const mkDeck = () => deck = suits.flatMap(s => ranks.map(r => r + s));
     const v = c => { const r = c.slice(0, -1); return r === 'A' ? 11 : (['K', 'Q', 'J'].includes(r) ? 10 : parseInt(r, 10)); };
     const total = h => { let s = h.reduce((a, c) => a + v(c), 0), a = h.filter(c => c[0] === 'A').length; while (s > 21 && a > 0) { s -= 10; a-- } return s };
     const upd = () => { document.getElementById('hand').textContent = 'Player: ' + player.join(' ') + ' (' + total(player) + ')'; document.getElementById('dealer').textContent = 'Dealer: ' + dealer.join(' ') + ' (' + total(dealer) + ')' };
     const updBalance = () => { document.getElementById('balanceDisplay').textContent = 'Balance: $' + balance };
-    const end = m => { gameOver = true; document.getElementById('status').textContent = m;['hit', 'stand'].forEach(id => document.getElementById(id).disabled = true) };
+    const end = (m, outcome = '') => {
+      gameOver = true;
+      document.getElementById('status').textContent = m;
+      ['hit', 'stand'].forEach(id => document.getElementById(id).disabled = true);
+      if (currentBet > 0) {
+        if (outcome === 'win') {
+          balance += currentBet * 2;
+        } else if (outcome === 'push') {
+          balance += currentBet;
+        }
+        currentBet = 0;
+        updBalance();
+      }
+    };
     const draw = () => deck.splice(Math.floor(Math.random() * deck.length), 1)[0];
-    const check = () => { const p = total(player); if (p === 21) end('Player has blackjack!'); else if (p > 21) end('Player busts. Dealer wins.') };
+    const check = () => { const p = total(player); if (p === 21) end('Player has blackjack!', 'win'); else if (p > 21) end('Player busts. Dealer wins.', 'lose') };
     const deal = () => { mkDeck(); player = []; dealer = []; gameOver = false; for (let i = 0; i < 4; i++) { (i % 2 === 0 ? player : dealer).push(draw()) } document.getElementById('status').textContent = '';['hit', 'stand'].forEach(id => document.getElementById(id).disabled = false); upd(); check() };
     const hit = () => { if (gameOver) return; player.push(draw()); upd(); check() };
-    const stand = () => { if (gameOver) return; while (total(dealer) < 17) dealer.push(draw()); upd(); const p = total(player), d = total(dealer); if (d > 21) end('Dealer busts. Player wins.'); else if (d > p) end('Dealer wins.'); else if (d < p) end('Player wins.'); else end('Push.') };
+    const stand = () => { if (gameOver) return; while (total(dealer) < 17) dealer.push(draw()); upd(); const p = total(player), d = total(dealer); if (d > 21) end('Dealer busts. Player wins.', 'win'); else if (d > p) end('Dealer wins.', 'lose'); else if (d < p) end('Player wins.', 'win'); else end('Push.', 'push') };
     ['deal', 'hit', 'stand'].forEach(id => document.getElementById(id).addEventListener('click', { deal, hit, stand }[id]));
 
     document.getElementById('betamount').addEventListener('click', () => {
@@ -80,18 +87,10 @@
           alert('Insufficient balance. Please enter a valid bet amount.');
           return;
         }
-        alert('Bet amount set to $' + betAmount);
+        currentBet = betAmount;
         balance -= betAmount;
+        alert('Bet amount set to $' + betAmount);
         updBalance();
-        if (balance <= 0) {
-          alert('You have run out of balance. Game over.');
-          end('Game over. You have no more balance.');
-          if (updBalance() && balance <= 0) {
-           upd *= 2;
-            updBalance();
-            updateLeaderboard(playerName);
-          }
-        }
       }
     });
     updBalance();
@@ -112,6 +111,12 @@
       leaderboard = leaderboard.slice(0, 5); // Keep only top 5
       localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
     };
+    if (balance > 0) {
+      const playerName = prompt('Enter your name for the leaderboard:');
+      if (playerName) {
+        updateLeaderboard(playerName);
+      }
+    }
   </script>
 </body>
 </html>
