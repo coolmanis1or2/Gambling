@@ -71,7 +71,7 @@
       }
     ]
 
-    let deck = [], player = [], dealer = [], gameOver = false, balance = 100, currentBet = 0;
+    let deck = [], player = [], dealer = [], gameOver = false, balance = 1000, currentBet = 0;
     const suits = ['♠', '♥', '♦', '♣'], ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
     const mkDeck = () => deck = suits.flatMap(s => ranks.map(r => r + s));
     const v = c => { const r = c.slice(0, -1); return r === 'A' ? 11 : (['K', 'Q', 'J'].includes(r) ? 10 : parseInt(r, 10)); };
