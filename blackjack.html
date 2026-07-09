@@ -51,23 +51,23 @@
     let topScores = [
       {
         name: "Aura farmer",
-        score: 10000
-      },
-      {
-        name: "Gamblingforfun",
         score: 7000
       },
       {
+        name: "Gamblingforfun",
+        score: 5670
+      },
+      {
         name: "Ineedsleep",
-        score: 4000
+        score: 4670
       },
       {
         name: "Hiimaura",
-        score: 3000
+        score: 3670
       },
       {
         name: "helpme",
-        score: 2000
+        score: 2670
       }
     ]
 
@@ -94,8 +94,10 @@
     };
     const draw = () => deck.splice(Math.floor(Math.random() * deck.length), 1)[0];
     const check = () => { const p = total(player); if (p === 21) end('Player has blackjack!', 'win'); else if (p > 21) end('Player busts. Dealer wins.', 'lose') };
-    const deal = () => { mkDeck(); player = []; dealer = []; gameOver = false; for (let i = 0; i < 4; i++) { (i % 2 === 0 ? player : dealer).push(draw()) } document.getElementById('status').textContent = '';['hit', 'stand'].forEach(id => document.getElementById(id).disabled = false); upd(); check() };
-    const hit = () => { if (gameOver) return; player.push(draw()); upd(); check() };
+    const checks = () => { const d = total(dealer); if (d === 21) end('Dealer has blackjack. Dealer wins.', 'lose'); else if (d > 21) end('Dealer busts. Player wins.', 'win') };
+
+    const deal = () => { mkDeck(); player = []; dealer = []; gameOver = false; for (let i = 0; i < 4; i++) { (i % 2 === 0 ? player : dealer).push(draw()) } document.getElementById('status').textContent = '';['hit', 'stand'].forEach(id => document.getElementById(id).disabled = false); upd(); check(); checks(); };
+    const hit = () => { if (gameOver) return; player.push(draw()); upd(); check(); checks(); };
     const stand = () => { if (gameOver) return; while (total(dealer) < 17) dealer.push(draw()); upd(); const p = total(player), d = total(dealer); if (d > 21) end('Dealer busts. Player wins.', 'win'); else if (d > p) end('Dealer wins.', 'lose'); else if (d < p) end('Player wins.', 'win'); else end('Push.', 'push') };
     ['deal', 'hit', 'stand'].forEach(id => document.getElementById(id).addEventListener('click', { deal, hit, stand }[id]));
 
