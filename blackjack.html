@@ -51,27 +51,27 @@
     let topScores = [
       {
         name: "Aura farmer",
-        score: 3000
+        score: 10000
       },
       {
         name: "Gamblingforfun",
-        score: 2500
+        score: 7000
       },
       {
         name: "Ineedsleep",
-        score: 1500
+        score: 4000
       },
       {
         name: "Hiimaura",
-        score: 1300
+        score: 3000
       },
       {
         name: "helpme",
-        score: 1100
+        score: 2000
       }
     ]
 
-    let deck = [], player = [], dealer = [], gameOver = false, balance = 1500, currentBet = 0;
+    let deck = [], player = [], dealer = [], gameOver = false, balance = 100, currentBet = 0;
     const suits = ['♠', '♥', '♦', '♣'], ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
     const mkDeck = () => deck = suits.flatMap(s => ranks.map(r => r + s));
     const v = c => { const r = c.slice(0, -1); return r === 'A' ? 11 : (['K', 'Q', 'J'].includes(r) ? 10 : parseInt(r, 10)); };
